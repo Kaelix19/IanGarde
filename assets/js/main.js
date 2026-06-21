@@ -14,11 +14,38 @@ const darkToggle = document.querySelector("[data-dark-toggle]");
 const certificateModal = document.querySelector("[data-certificate-modal]");
 const certificateImage = document.querySelector("[data-certificate-image]");
 const certificateTitle = document.querySelector("[data-certificate-title]");
+const certificateTrack = document.querySelector("[data-certificate-track]");
+const certificatePrev = document.querySelector("[data-certificate-prev]");
+const certificateNext = document.querySelector("[data-certificate-next]");
+let certificateSlideshowTimer;
+
+const certificates = [
+  { title: "Certificate 01", image: "assets/certificates/certificate-01.PNG" },
+  { title: "Certificate 02", image: "assets/certificates/certificate-02.PNG" },
+  { title: "Certificate 03", image: "assets/certificates/certificate-03.jpg" },
+  { title: "Certificate 04", image: "assets/certificates/certificate-04.jpg" },
+  { title: "Certificate 05", image: "assets/certificates/certificate-05.PNG" },
+  { title: "Certificate 06", image: "assets/certificates/certificate-06.jpg" },
+  { title: "Certificate 07", image: "assets/certificates/certificate-07.PNG" },
+  { title: "Certificate 08", image: "assets/certificates/certificate-08.jpg" },
+  { title: "Certificate 09", image: "assets/certificates/certificate-09.jpg" },
+  { title: "Certificate 10", image: "assets/certificates/certificate-10.PNG" },
+  { title: "Certificate 11", image: "assets/certificates/certificate-11.jpg" },
+  { title: "Certificate 12", image: "assets/certificates/certificate-12.PNG" },
+  { title: "Certificate 13", image: "assets/certificates/certificate-13.jpg" },
+  { title: "Certificate 14", image: "assets/certificates/certificate-14.PNG" },
+  { title: "Certificate 15", image: "assets/certificates/certificate-15.jpg" },
+  { title: "Certificate 16", image: "assets/certificates/certificate-16.jpg" },
+  { title: "Certificate 17", image: "assets/certificates/certificate-17.jpg" },
+  { title: "Certificate 18", image: "assets/certificates/certificate-18.jpg" },
+  { title: "Certificate 19", image: "assets/certificates/certificate-19.jpg" },
+];
 
 document.addEventListener("DOMContentLoaded", () => {
   document.body.classList.add("page-ready");
   highlightActiveLink();
   restoreTheme();
+  renderCertificateShowcase();
 });
 
 if (navToggle && mobileMenu) {
@@ -84,46 +111,115 @@ document.querySelectorAll("[data-engagement]").forEach((button) => {
   });
 });
 
-document.querySelectorAll("[data-certificate-filter]").forEach((filterButton) => {
-  filterButton.addEventListener("click", () => {
-    const selectedCategory = filterButton.dataset.certificateFilter || "All";
+function renderCertificateShowcase() {
+  if (!certificateTrack) return;
 
-    document.querySelectorAll("[data-certificate-filter]").forEach((button) => {
-      const isActive = button === filterButton;
-      button.classList.toggle("active", isActive);
-      button.classList.toggle("border-[var(--primary)]", isActive);
-      button.classList.toggle("bg-[var(--primary)]", isActive);
-      button.classList.toggle("text-[var(--on-primary)]", isActive);
-      button.classList.toggle("border-[var(--accent)]", !isActive);
-      button.classList.toggle("text-[var(--on-surface)]", !isActive);
-    });
+  certificateTrack.innerHTML = certificates.map((certificate, index) => {
+    const number = String(index + 1).padStart(2, "0");
+    const loading = index < 3 ? "eager" : "lazy";
 
-    document.querySelectorAll(".certificate-card").forEach((card) => {
-      const cardCategory = card.dataset.certificateCategory;
-      const shouldShow = selectedCategory === "All" || cardCategory === selectedCategory;
-      card.classList.toggle("hidden", !shouldShow);
-    });
+    return `
+      <article class="certificate-showcase-card" data-certificate-index="${index}">
+        <button class="block w-full text-left" type="button" data-certificate-open data-certificate-index="${index}" aria-label="View ${certificate.title}">
+          <div class="certificate-frame">
+            <img src="${certificate.image}" alt="${certificate.title}" loading="${loading}" decoding="async">
+          </div>
+        </button>
+      </article>
+    `;
+  }).join("");
+
+  updateActiveCertificate();
+}
+
+function updateActiveCertificate() {
+  if (!certificateTrack) return;
+
+  const trackCenter = certificateTrack.getBoundingClientRect().left + certificateTrack.clientWidth / 2;
+  let closestCard = null;
+  let closestDistance = Infinity;
+
+  certificateTrack.querySelectorAll(".certificate-showcase-card").forEach((card) => {
+    const rect = card.getBoundingClientRect();
+    const cardCenter = rect.left + rect.width / 2;
+    const distance = Math.abs(trackCenter - cardCenter);
+
+    if (distance < closestDistance) {
+      closestDistance = distance;
+      closestCard = card;
+    }
   });
-});
 
-document.querySelectorAll("[data-certificate-open]").forEach((button) => {
-  button.addEventListener("click", () => {
-    if (!certificateModal) return;
+  certificateTrack.querySelectorAll(".certificate-showcase-card").forEach((card) => {
+    card.classList.toggle("is-active", card === closestCard);
+  });
+}
 
-    const title = button.dataset.title || "Certificate";
-    const image = button.dataset.image || "assets/certificates/certificate-01.jpg";
+function scrollCertificate(direction) {
+  if (!certificateTrack) return;
+  const activeCard = certificateTrack.querySelector(".certificate-showcase-card.is-active");
+  const cards = [...certificateTrack.querySelectorAll(".certificate-showcase-card")];
+  const currentIndex = Math.max(0, cards.indexOf(activeCard));
+  const nextIndex = (currentIndex + direction + cards.length) % cards.length;
+  cards[nextIndex]?.scrollIntoView({ behavior: "smooth", block: "nearest", inline: "center" });
+}
+
+function startCertificateSlideshow() {
+  if (!certificateTrack || certificateSlideshowTimer || window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+  certificateSlideshowTimer = window.setInterval(() => scrollCertificate(1), 4500);
+}
+
+function stopCertificateSlideshow() {
+  window.clearInterval(certificateSlideshowTimer);
+  certificateSlideshowTimer = undefined;
+}
+
+if (certificateTrack) {
+  certificateTrack.addEventListener("scroll", () => {
+    window.requestAnimationFrame(updateActiveCertificate);
+  });
+
+  certificateTrack.addEventListener("click", (event) => {
+    const openButton = event.target.closest("[data-certificate-open]");
+    if (!openButton || !certificateModal) return;
+
+    const certificate = certificates[Number(openButton.dataset.certificateIndex)];
+    if (!certificate) return;
 
     if (certificateImage) {
-      certificateImage.src = image;
-      certificateImage.alt = title;
+      certificateImage.src = certificate.image;
+      certificateImage.alt = certificate.title;
     }
-    if (certificateTitle) certificateTitle.textContent = title;
+    if (certificateTitle) certificateTitle.textContent = certificate.title;
 
     certificateModal.classList.remove("hidden");
     certificateModal.classList.add("flex");
     document.body.classList.add("modal-open");
   });
-});
+
+  window.addEventListener("resize", updateActiveCertificate);
+  certificateTrack.addEventListener("mouseenter", stopCertificateSlideshow);
+  certificateTrack.addEventListener("mouseleave", startCertificateSlideshow);
+  certificateTrack.addEventListener("focusin", stopCertificateSlideshow);
+  certificateTrack.addEventListener("focusout", startCertificateSlideshow);
+  startCertificateSlideshow();
+}
+
+if (certificatePrev) {
+  certificatePrev.addEventListener("click", () => {
+    stopCertificateSlideshow();
+    scrollCertificate(-1);
+    startCertificateSlideshow();
+  });
+}
+
+if (certificateNext) {
+  certificateNext.addEventListener("click", () => {
+    stopCertificateSlideshow();
+    scrollCertificate(1);
+    startCertificateSlideshow();
+  });
+}
 
 function closeModal() {
   if (!modal) return;
