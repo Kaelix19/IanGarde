@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Achievements | LUMEN</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="assets/css/style.css">
+</head>
+<body>
+  <div class="page-shell">
+    <header class="top-nav"><div class="container-max nav-inner"><a class="brand" href="index.html">LUMEN</a><nav class="nav-links"><a data-nav-link class="nav-link" href="index.html">Home</a><a data-nav-link class="nav-link" href="about.html">About</a><a data-nav-link class="nav-link" href="curriculum-vitae.html">CV</a><a data-nav-link class="nav-link" href="achievements.html">Achievements</a><a data-nav-link class="nav-link" href="engagements.html">Engagements</a><a data-nav-link class="nav-link" href="contact.html">Contact</a></nav><div class="nav-actions"><button data-dark-toggle class="icon-btn" type="button" aria-label="Toggle dark mode"><span class="material-symbols-outlined">contrast</span></button><button data-nav-toggle class="menu-btn" type="button"><span class="material-symbols-outlined">menu</span></button></div></div><div data-mobile-menu class="mobile-panel container-max"><a data-nav-link class="nav-link" href="index.html">Home</a><a data-nav-link class="nav-link" href="about.html">About</a><a data-nav-link class="nav-link" href="curriculum-vitae.html">CV</a><a data-nav-link class="nav-link" href="achievements.html">Achievements</a><a data-nav-link class="nav-link" href="engagements.html">Engagements</a><a data-nav-link class="nav-link" href="contact.html">Contact</a></div></header>
+    <main>
+      <section class="container-max section-pad">
+        <span class="eyebrow">Milestones</span>
+        <h1 class="page-title">Achievements</h1>
+        <div style="display: grid; gap: 40px; margin-top: 72px;">
+          <article class="achievement-card editorial-card">
+            <div class="image-placeholder"><img class="portfolio-image" src="assets/images/lecturer.jpg" alt="NMAT lecturer engagement"></div>
+            <div class="achievement-content">
+              <p class="number">01</p>
+              <span class="eyebrow" style="margin-top: 24px;">NMAT Lecturer at Thinkers Review Specialist</span>
+              <h2 class="headline">Being a Lecturer</h2>
+              <p class="body-lg" style="margin-top: 24px;">Invited as a lecturer, Ian C. Garde contributed to learner preparation through clear instruction, mentoring, and values-centered academic guidance. This engagement reflects his commitment to helping students approach rigorous examinations with discipline, confidence, and a deeper appreciation of learning as a path toward service.</p>
+            </div>
+          </article>
+          <article class="achievement-card editorial-card">
+            <div class="image-placeholder"><img class="portfolio-image" src="assets/images/speaker-surallah.png" alt="Keynote speaker engagement"></div>
+            <div class="achievement-content">
+              <p class="number">02</p>
+              <span class="eyebrow" style="margin-top: 24px;">Notre Dame of Surala, Inc. Moving-Up Ceremony 2026</span>
+              <h2 class="headline">Keynote Speaker</h2>
+              <p class="body-lg" style="margin-top: 24px;">As keynote speaker for the 2026 Moving-Up Ceremony of Notre Dame of Surala, Inc., Ian C. Garde delivered a message centered on purpose, perseverance, character, and the responsibility of learners to transform opportunity into meaningful service for their families, schools, and communities.</p>
+            </div>
+          </article>
+        </div>
+      </section>
+      <section class="container-max section-pad pt-0">
+        <div class="max-w-3xl">
+          <span class="eyebrow">Verified Learning and Service</span>
+          <h2 class="page-title">Certificates &amp; Professional Development</h2>
+          <p class="body-lg mt-6">A refined showcase of e-certificates documenting continued growth, service, and professional formation.</p>
+        </div>
+        <div class="certificate-showcase mt-14" aria-label="Certificate carousel">
+          <div class="mb-5 flex items-center justify-end gap-4">
+            <div class="hidden shrink-0 gap-3 sm:flex">
+              <button class="icon-btn" type="button" data-certificate-prev aria-label="Previous certificate"><span class="material-symbols-outlined">chevron_left</span></button>
+              <button class="icon-btn" type="button" data-certificate-next aria-label="Next certificate"><span class="material-symbols-outlined">chevron_right</span></button>
+            </div>
+          </div>
+          <div data-certificate-track class="certificate-track" tabindex="0" aria-live="polite"></div>
+        </div>
+      </section>
+    </main>
+    <footer class="section-pad"><div class="container-max" style="display: flex; justify-content: space-between; gap: 32px; flex-wrap: wrap;"><a class="brand" href="index.html">LUMEN</a><div style="text-align: right;"><p class="body-md">&copy; 2026 Ian C. Garde. All Rights Reserved.</p><p class="body-md">Leading with purpose. Serving with integrity.</p></div></div></footer>
+  </div>
+  <div data-certificate-modal class="modal hidden">
+    <div class="relative w-full max-w-6xl overflow-hidden rounded-lg bg-[var(--surface)] shadow-2xl">
+      <button data-certificate-close class="icon-btn modal-close" type="button" aria-label="Close certificate modal"><span class="material-symbols-outlined">close</span></button>
+      <div class="grid lg:grid-cols-[minmax(0,1fr)_360px]">
+        <div class="max-h-[82vh] overflow-auto bg-[var(--surface-dim)] p-4 md:p-8">
+          <img data-certificate-image class="mx-auto block max-h-[76vh] w-auto max-w-full rounded border border-[var(--outline-variant)] bg-white object-contain shadow-xl shadow-black/10" src="assets/certificates/certificate-01.PNG" alt="Certificate preview">
+        </div>
+        <div class="border-t border-[var(--outline-variant)] p-8 lg:border-l lg:border-t-0">
+          <h3 data-certificate-title class="headline">Certificate 01</h3>
+          <button data-certificate-close class="btn-secondary mt-10" type="button">Close Preview</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <button id="scrollTop" type="button" aria-label="Scroll to top">&uarr;</button><script src="assets/js/main.js"></script>
+</body>
+</html>
