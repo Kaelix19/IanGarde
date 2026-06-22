@@ -279,8 +279,19 @@ if (contactForm) {
       return;
     }
 
-    contactForm.reset();
-    if (message) message.textContent = "Thank you. Your message has been prepared for review.";
+    const formData = new FormData(contactForm);
+    const name = formData.get("name").trim();
+    const email = formData.get("email").trim();
+    const subject = formData.get("subject").trim();
+    const body = [
+      formData.get("message").trim(),
+      "",
+      `From: ${name}`,
+      `Email: ${email}`,
+    ].join("\n");
+
+    window.location.href = `mailto:igardephl@gmail.com?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+    if (message) message.textContent = "Opening your email app...";
   });
 }
 
